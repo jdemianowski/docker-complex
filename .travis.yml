@@ -1,0 +1,32 @@
+language: generic 
+sudo: required
+
+services:
+  - docker
+
+before_install:
+  - docker build -t kdemianowski/react-complex -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true kdemianowski/react-complex npm run test
+
+afterafter_success:
+  - docker build -t kdemianowski/complex-client ./client
+  - docker build -t kdemianowski/complex-nginx ./nginx
+  - docker build -t kdemianowski/complex-server ./server
+  - docker build -t kdemianowski/complex-worker ./worker
+
+# deploy:
+#   edge: true
+#   provider: elasticbeanstalk
+#   region: "us-east-1"
+#   app: "docker"
+#   env: "Docker-env"
+#   bucket_name: "elasticbeanstalk-us-east-1-498923537511"
+#   bucket_path: "docker"
+#   on:
+#     branch: master
+#   access_key_id: $AWS_ACCESS_KEY
+#   secret_access_key: $AWS_SECRET_KEY
+
+
