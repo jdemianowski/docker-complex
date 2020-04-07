@@ -15,6 +15,11 @@ afterafter_success:
   - docker build -t kdemianowski/complex-nginx ./nginx
   - docker build -t kdemianowski/complex-server ./server
   - docker build -t kdemianowski/complex-worker ./worker
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  - docker push kdemianowski/complex-client
+  - docker push kdemianowski/complex-nginx
+  - docker push kdemianowski/complex-server
+  - docker push kdemianowski/complex-worker
 
 # deploy:
 #   edge: true
